@@ -3,7 +3,7 @@ import scrapy
 from deals.items import DealItem
 
 
-class GrouponSpider(scrapy.Spider):
+class GroupaliaSpider(scrapy.Spider):
     name = "groupalia"
     allowed_domains = ["groupalia.com"]
 
