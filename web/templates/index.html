@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Crawler</title>
-    <script src="http://code.jquery.com/jquery-2.2.2.min.ljs" integrity="sha256-36cp2Co+/62rEAAYHLmRCPIych47CvdM+uTBJwSzWjI="
+    <script src="http://code.jquery.com/jquery-2.2.2.min.js" integrity="sha256-36cp2Co+/62rEAAYHLmRCPIych47CvdM+uTBJwSzWjI="
             crossorigin="anonymous"></script>
 </head>
 <body>
@@ -20,15 +20,25 @@
         </p>
         <button id="search">Search</button>
     </div>
-    <div id="groupon"><h1>Groupon</h1></div>
-    <div id="groupalia"><h1>Groupalia</h1></div>
+    <h1>Groupon</h1>
+    <div id="groupon"></div>
+    <h1>Groupalia</h1>
+    <div id="groupalia"></div>
+    <h1>Lets Bonus</h1>
+    <div id="lets_bonus"></div>
+
     <script type="text/javascript">
         $(document).ready(function() {
             $('#search').on('click', function() {
+                $("#groupon").empty();
+                $("#groupalia").empty();
+                $("#lets_bonus").empty();
+
                 var params = {
                     location: $("#location").val(),
                     query: $("#query").val(),
                 };
+
                 $.getJSON("/groupon", params, function(data) {
                     for (var i = 0, len = data.length; i < len; i++) {
                         var deal = data[i]
@@ -41,6 +51,13 @@
                      for (var i = 0, len = data.length; i < len; i++) {
                         var deal = data[i]
                         $("#groupalia").append(newDeal(deal));
+                    }
+                });
+
+                $.getJSON("/lets_bonus", params, function(data) {
+                     for (var i = 0, len = data.length; i < len; i++) {
+                        var deal = data[i]
+                        $("#lets_bonus").append(newDeal(deal));
                     }
                 });
             });
