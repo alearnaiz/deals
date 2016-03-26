@@ -2,37 +2,117 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Crawler</title>
-    <script src="http://code.jquery.com/jquery-2.2.2.min.js" integrity="sha256-36cp2Co+/62rEAAYHLmRCPIych47CvdM+uTBJwSzWjI="
-            crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Deals</title>
+    <script src="http://code.jquery.com/jquery-2.2.2.min.js" integrity="sha256-36cp2Co+/62rEAAYHLmRCPIych47CvdM+uTBJwSzWjI=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 </head>
 <body>
-    <div>
-        <p>
-            <label for="location">Location:</label>
-            <select name="location" id="location">
-                <option value="1">Palma de mallorca</option>
-            </select>
-        </p>
-        <p>
-            <label for="query">Query:</label>
-            <input type="text" name="query" id="query">
-        </p>
-        <button id="search">Search</button>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Deals</h3>
+        </div>
+        <div class="panel-body">
+            <form>
+                <div class="form-group">
+                    <label for="query">Query</label>
+                    <input type="text" class="form-control" id="query" placeholder="Query">
+                </div>
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <select name="location" class="form-control" id="location">
+                        <option value="1">Palma de mallorca</option>
+                        <option value="2">Sevilla</option>
+                        <option value="3">Madrid</option>
+                    </select>
+                </div>
+                <input type="submit" id="search" class="btn btn-success" value="Search">
+            </form>
+
+            <!-- Nav tabs -->
+            <div id="results" style="display: none;">
+                <br/>
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#groupon" aria-controls="groupon" role="tab" data-toggle="tab">Groupon</a></li>
+                    <li role="presentation"><a href="#groupalia" aria-controls="groupalia" role="tab" data-toggle="tab">Groupalia</a></li>
+                    <li role="presentation"><a href="#lets-bonus" aria-controls="lets-bonus" role="tab" data-toggle="tab">Lets Bonus</a></li>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade in active" id="groupon">
+                        <h4>Groupon</h4>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Original price</th>
+                                    <th>Original discount</th>
+                                    <th>Link</th>
+                                </tr>
+                            </thead>
+                            <tbody id="groupon-results">
+                            </tbody>
+                        </table>
+                        <img src="../static/loading.gif" alt="Loading" id="groupon-loading" class="center-block">
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="groupalia">
+                        <h4>Groupalia</h4>
+
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Original price</th>
+                                    <th>Original discount</th>
+                                    <th>Link</th>
+                                </tr>
+                            </thead>
+                            <tbody id="groupalia-results">
+                            </tbody>
+                        </table>
+
+                        <img src="../static/loading.gif" alt="Loading" id="groupalia-loading" class="center-block">
+                </table>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="lets-bonus">
+                        <h4>Lets Bonus</h4>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Original price</th>
+                                    <th>Original discount</th>
+                                    <th>Link</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lets-bonus-results">
+                            </tbody>
+                        </table>
+                        <img src="../static/loading.gif" alt="Loading" id="lets-bonus-loading" class="center-block">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer">
+            &copy; Alejandro Arnáiz González - <a href="https://github.com/alearnaiz/deals">GitHub</a> - <a href="mailto:alejandro.arnaiz.gonzalez@gmail.com">email</a>
+        </div>
     </div>
-    <h1>Groupon</h1>
-    <div id="groupon"></div>
-    <h1>Groupalia</h1>
-    <div id="groupalia"></div>
-    <h1>Lets Bonus</h1>
-    <div id="lets_bonus"></div>
 
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#search').on('click', function() {
-                $("#groupon").empty();
-                $("#groupalia").empty();
-                $("#lets_bonus").empty();
+            $('#search').on('click', function(ev) {
+                ev.preventDefault();
+
+                $("#groupon-results").empty();
+                $("#groupalia-results").empty();
+                $("#lets-bonus-results").empty();
+
+
+                $("#groupon-loading").show();
+                $("#groupalia-loading").show();
+                $("#lets-bonus-loading").show();
+                $("#results").show();
 
                 var params = {
                     location: $("#location").val(),
@@ -40,35 +120,38 @@
                 };
 
                 $.getJSON("/groupon", params, function(data) {
+                    $("#groupon-loading").hide();
                     for (var i = 0, len = data.length; i < len; i++) {
                         var deal = data[i]
-                        $("#groupon").append(newDeal(deal));
+                        $("#groupon-results").append(newDeal(deal));
                     }
 
                 });
 
                  $.getJSON("/groupalia", params, function(data) {
+                     $("#groupalia-loading").hide();
                      for (var i = 0, len = data.length; i < len; i++) {
                         var deal = data[i]
-                        $("#groupalia").append(newDeal(deal));
+                        $("#groupalia-results").append(newDeal(deal));
                     }
                 });
 
                 $.getJSON("/lets_bonus", params, function(data) {
+                    $("#lets-bonus-loading").hide();
                      for (var i = 0, len = data.length; i < len; i++) {
                         var deal = data[i]
-                        $("#lets_bonus").append(newDeal(deal));
+                        $("#lets-bonus-results").append(newDeal(deal));
                     }
                 });
             });
         });
 
         function newDeal(deal) {
-            var newDeal = $('<p/>');
-            newDeal.append('Title: ' + deal.title);
-            newDeal.append('<br/>Original price: ' + deal.original_price);
-            newDeal.append('<br/>Original discount: ' + deal.original_discount);
-            newDeal.append('<br/>Link: <a href="' + deal.link + '">' + deal.link + '</a>');
+            var newDeal = $('<tr/>');
+            newDeal.append('<td>' + deal.title + '</td>');
+            newDeal.append('<td>' + deal.original_price + '</td>');
+            newDeal.append('<td>' + deal.original_discount + '</td>');
+            newDeal.append('<td><a href="' + deal.link + '">' + deal.link + '</a></td>');
             return newDeal;
         }
     </script>

@@ -5,7 +5,9 @@ import os
 class Utils(object):
 
     locations = {
-        '1': Location('palma_de_mallorca', 'mallorca', 'mallorca')
+        '1': Location('palma_de_mallorca', 'mallorca', 'mallorca'),
+        '2': Location('sevilla', 'sevilla', 'sevilla'),
+        '3': Location('madrid', 'madrid', 'madrid'),
     }
 
     @classmethod
