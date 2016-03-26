@@ -9,3 +9,7 @@ Deals is a website which crawls groupon, groupalia, lets bonus and extract deals
 ## Install
 * [Scrapy](URL "https://github.com/scrapy/scrapy")
 * [Flask](URL "https://github.com/mitsuhiko/flask")
+
+## How to use
+* Execute web/app.py
+* Open a browser with the URL http://127.0.0.1:5000/
