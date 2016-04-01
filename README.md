@@ -1,7 +1,7 @@
 # Deals
 
 ## Overview
-Deals is a website which scraps groupon, groupalia and lets bonus and extracts deals according to a location and a query (multiple queries split by comma)
+Deals is a website which crawls groupon, groupalia and lets bonus and extracts deals according to a location and a query (multiple queries split by comma)
 
 ## Requirements
 * Python 2.7
