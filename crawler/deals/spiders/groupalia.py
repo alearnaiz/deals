@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from deals.items import DealItem
+from crawler.deals.items import DealItem
 
 
 class GroupaliaSpider(scrapy.Spider):
