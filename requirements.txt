@@ -1,2 +1,2 @@
 Flask==0.10.1
-scrapy==1.0.5
+Scrapy==1.0.5
