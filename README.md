@@ -7,8 +7,7 @@ Deals is a website which crawls groupon, groupalia and lets bonus and extracts d
 * Python 2.7
 
 ## Install
-* [Scrapy](https://github.com/scrapy/scrapy "Scrapy")
-* [Flask](https://github.com/mitsuhiko/flask "Flask")
+* pip install -r requirements.txt 
 
 ## How to use
 * Execute web/app.py
